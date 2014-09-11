@@ -30,6 +30,11 @@ App::uses('AppController', 'Controller');
  */
 class PagesController extends AppController {
 
+	public function beforeFilter() {
+		parent::beforeFilter();
+		$this->Auth->allow();
+	}
+
 /**
  * This controller does not use a model
  *
@@ -73,5 +78,13 @@ class PagesController extends AppController {
 			}
 			throw new NotFoundException();
 		}
+	}
+
+	public function add_resume() {
+		$this->loadModel('User');
+		$users = $this->User->find('list');
+		$this->loadModel('Candidate');
+		$candidates = $this->Candidate->find('list');
+		$this->set(compact('users', 'candidates'));
 	}
 }

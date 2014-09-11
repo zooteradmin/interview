@@ -20,6 +20,7 @@
  */
 
 App::uses('Controller', 'Controller');
+App::uses('UserLevel', 'Lib/Enum');
 
 /**
  * Application Controller
@@ -31,4 +32,31 @@ App::uses('Controller', 'Controller');
  * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
+  public $components = array(
+    'Session',
+    'Auth' => array(
+      'logoutRedirect' => array('controller' => 'users', 'action' => 'login', 'admin' => false),
+      'loginRedirect' => array('controller' => 'users', 'action' => 'dashboard', 'admin' => false),
+      'authenticate' => array(
+        'Form' => array(
+          'fields' => array('username' => 'email')
+          )
+        )
+      )
+    );
+
+  public function beforeFilter() {
+    parent::beforeFilter();
+    if (!empty($this->request->params['prefix']) && $this->request->params['prefix'] == 'admin') {
+
+      if (!AuthComponent::user('id')) {
+        $this->redirect(array('controller' => 'users', 'action' => 'login', 'admin' => false));
+      }
+
+      if (AuthComponent::user('level') != UserLevel::ADMINISTRATOR) {
+        $this->Auth->logout();
+      }
+      $this->layout = 'admin';
+    }
+  }
 }

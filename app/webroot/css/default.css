@@ -1,0 +1,11 @@
+.main-image {
+  margin-bottom: 20px;
+}
+.main-link {
+  color: #000;
+  text-decoration: none;
+}
+.main-link:hover {
+  text-decoration: none;
+  color: #000;
+}

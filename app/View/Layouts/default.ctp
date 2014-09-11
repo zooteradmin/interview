@@ -14,8 +14,8 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-$cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework');
-$cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
+$cakeDescription = __d('interview_dev', 'Interview Schedular: the perfect interview scheduling software');
+$cakeVersion = __d('interview_dev', 'CakePHP %s', Configure::version())
 ?>
 <!DOCTYPE html>
 <html>
@@ -27,37 +27,49 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	</title>
 	<?php
 		echo $this->Html->meta('icon');
-
-		echo $this->Html->css('cake.generic');
-
 		echo $this->fetch('meta');
+
+		echo $this->Html->css('bootstrap.min');
+		echo $this->Html->css('default');
 		echo $this->fetch('css');
+
+		echo $this->Html->script('jquery-1.11.1.min');
+		echo $this->Html->script('default');
 		echo $this->fetch('script');
 	?>
+	<script type="text/javascript">
+  	var WEBROOT = '<?php echo $this->request->webroot; ?>';
+  </script>
 </head>
 <body>
-	<div id="container">
-		<div id="header">
-			<h1><?php echo $this->Html->link($cakeDescription, 'http://cakephp.org'); ?></h1>
-		</div>
-		<div id="content">
-
-			<?php echo $this->Session->flash(); ?>
-
-			<?php echo $this->fetch('content'); ?>
-		</div>
-		<div id="footer">
-			<?php echo $this->Html->link(
-					$this->Html->image('cake.power.gif', array('alt' => $cakeDescription, 'border' => '0')),
-					'http://www.cakephp.org/',
-					array('target' => '_blank', 'escape' => false, 'id' => 'cake-powered')
-				);
-			?>
-			<p>
-				<?php echo $cakeVersion; ?>
-			</p>
+	<div id="header">
+		<div class="container">
+		  <div class="row">
+		    <div class="col-md-4 col-md-offset-4 text-center">
+		      <h1><?php echo $this->Html->link(__('Interview Scheduler'), '/', array('class' => 'main-link')); ?></h1>
+		    </div>
+		  </div>
 		</div>
 	</div>
-	<?php echo $this->element('sql_dump'); ?>
+
+	<div id="content">
+
+   	<?php if ($this->Session->check('Message.flash')): ?>
+      <div class="alert alert-info">
+        <?php echo $this->Session->flash(); ?>
+      </div>
+    <?php endif; ?>
+
+		<?php echo $this->fetch('content'); ?>
+	</div>
+
+	<div id="footer">
+	  <div class="container">
+	    <p class="text-muted">Copyright ©2010 Interview Scheduler</p>
+	  </div>
+	</div>
+
+	<?php //echo $this->element('sql_dump'); ?>
+
 </body>
 </html>
