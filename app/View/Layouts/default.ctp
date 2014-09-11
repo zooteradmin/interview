@@ -45,6 +45,7 @@ $cakeVersion = __d('interview_dev', 'CakePHP %s', Configure::version())
 	<div id="header">
 		<div class="container">
 		  <div class="row">
+		  	<?php echo $this->Html->link(__('Logout'), array('controller' => 'users', 'action' => 'logout'), array('class' => 'btn btn-primary pull-right')); ?>
 		    <div class="col-md-4 col-md-offset-4 text-center">
 		      <h1><?php echo $this->Html->link(__('Interview Scheduler'), '/', array('class' => 'main-link')); ?></h1>
 		    </div>
