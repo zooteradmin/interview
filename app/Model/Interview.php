@@ -36,7 +36,7 @@ class Interview extends AppModel {
 	public $hasMany = array(
 		'Feedback' => array(
 			'className' => 'Feedback',
-			'foreignKey' => 'feedback_id',
+			'foreignKey' => 'interview_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''

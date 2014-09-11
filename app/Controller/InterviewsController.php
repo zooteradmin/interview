@@ -17,15 +17,18 @@ class InterviewsController extends AppController {
 	public $components = array('Paginator', 'Session');
 
 	public function index() {
-		$this->Interview->recursive = 0;
+		$this->Interview->recursive = 2;
 		$this->set('interviews', $this->Paginator->paginate());
 	}
 
 	public function schedule() {
 		if ($this->request->is('post')) {
 
-			$data = $this->__formatData($this->request->data);
+			$resumeData = $this->request->data['Candidate']['resume'];
+			$resume = $this->__uploadResume($resumeData);
+			$this->request->data['resume_filename'] = $resume;
 
+			$data = $this->__formatData($this->request->data);
 			if ($this->Interview->Candidate->saveInterview($data)) {
 				$this->Session->setFlash(__('Interview Scheduled successfully'), 'default', array('class' => 'alert alert-success'));
 				$this->redirect('/dashboard');
@@ -37,14 +40,36 @@ class InterviewsController extends AppController {
 		$this->set(compact('users'));
 	}
 
+	private function __uploadResume($resumeData) {
+		$uploadDir = WWW_ROOT . 'files' . DS . 'resumes';
+
+		$fileName = $resumeData['name'];
+		$uniqueFileName = uniqid() . '_' . $fileName;
+		$fullFileNameWithPath = $uploadDir . DS . $uniqueFileName;
+
+		if(!file_exists($uploadDir)) {
+			mkdir($uploadDir, 0777, true);
+		}
+		if (move_uploaded_file($resumeData["tmp_name"], $fullFileNameWithPath)) {
+			return $uniqueFileName;
+		}
+		return false;
+	}
+
 	private function __formatData($requestData) {
 		$data = $requestData;
 		unset($data['Candidate']['user_id']);
 		unset($data['Candidate']['time']);
+		unset($data['Candidate']['resume']);
 		$data['Interview'] = array(
 			array(
 				'user_id' => $requestData['Candidate']['user_id'],
 				'scheduled_time' => $requestData['Candidate']['time']
+			)
+		);
+		$data['Resume']= array(
+			array(
+				'filename' => $requestData['resume_filename']
 			)
 		);
 		return $data;

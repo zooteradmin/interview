@@ -4,6 +4,7 @@
   </div><!-- end col md 12 -->
 </div><!-- end row -->
 
+<?php //pr($interviews); die; ?>
 
 <table cellpadding="0" cellspacing="0" class="table table-striped">
   <thead>
@@ -12,6 +13,7 @@
       <th><?php echo $this->Paginator->sort('candidate_id'); ?></th>
       <th><?php echo $this->Paginator->sort('user_id', 'Interviewer'); ?></th>
       <th><?php echo $this->Paginator->sort('scheduled_time'); ?></th>
+      <th><?php echo __('Resume') ?></th>
       <th><?php echo __('Feedback') ?></th>
       <th class="actions"></th>
     </tr>
@@ -28,6 +30,11 @@
               <?php echo $this->Html->link($interview['User']['email'], array('controller' => 'users', 'action' => 'view', $interview['User']['id'])); ?>
             </td>
             <td><?php echo h($interview['Interview']['scheduled_time']); ?>&nbsp;</td>
+            <?php if (!empty($interview['Candidate']['Resume'])): ?>
+              <td><?php echo $this->Html->link(__('View Resume'), array('controller' => 'resumes', 'action' => 'view', end($interview['Candidate']['Resume'])['id']), array('target' => '_blank')); ?></td>
+            <?php else: ?>
+              <td><?php echo __('Resume not uploaded') ?></td>
+            <?php endif; ?>
             <td><?php echo $this->Html->link(__('Add Feedback'), array('controller' => 'feedback', 'action' => 'add', $interview['Interview']['id'])); ?></td>
             <td class="actions">
               <?php echo $this->Html->link('<span class="glyphicon glyphicon-search"></span>', array('action' => 'view', $interview['Interview']['id']), array('escape' => false)); ?>

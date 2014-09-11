@@ -3,7 +3,7 @@
     <div class="col-md-4 col-md-offset-4">
       <h3>Schedule Interview</h3>
       <hr>
-      <?php echo $this->Form->create('Candidate', array('role' => 'form')); ?>
+      <?php echo $this->Form->create('Candidate', array('role' => 'form', 'type' => 'file')); ?>
       <p><strong>Candidate Details</strong></p>
       <div class="form-group">
         <?php echo $this->Form->input('email', array('class' => 'form-control', 'placeholder' => 'Email', 'label' => false)); ?>
@@ -24,6 +24,9 @@
       <p>Time</p>
       <div class="form-group">
         <?php echo $this->Form->input('time', array('type' => 'datetime', 'label' => false)); ?>
+      </div>
+      <div class="form-group">
+        <?php echo $this->Form->input('resume', array('type' => 'file', 'label' => false)); ?>
       </div>
       <?php echo $this->Form->submit(__('Submit'), array('class' => 'btn btn-success')); ?>
       <?php echo $this->Form->end(); ?>
